@@ -35,7 +35,7 @@ const Message: React.FC<MessageProps> = ({ type, message, onClose }) => {
                     {message}
                 </div>
                 <button onClick={onClose} className="text-xl font-bold ml-4">
-                    <FontAwesomeIcon icon={faTimes} />
+                    <FontAwesomeIcon icon={faTimes}/>
                 </button>
             </div>
         </div>

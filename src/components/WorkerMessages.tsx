@@ -1,15 +1,8 @@
-import {useState, useEffect} from 'react';
+import { useState, useEffect } from 'react';
 
 interface MessageEvent {
     type: string;
     data?: any;
-}
-
-interface UpdateStateData {
-    trustedHash?: string;
-    fetchProgress?: number;
-    validateProgress?: number;
-    status?: 'processing' | 'completed';
 }
 
 interface MessageState {
@@ -17,31 +10,55 @@ interface MessageState {
     message: string;
 }
 
+export interface WorkerState {
+    trusted_hash: string;
+    trusted_block?:{ era: number; block_height: number };
+    last_validated?: { era: number; block_height: number };
+    blocks_to_process?: number;
+    fetch_progress: number;
+    fetch_eta?: number;
+    validate_progress: number;
+    validate_eta?: number;
+    message: MessageState | null;
+    status: 'idle' | 'processing' | 'error';
+    validators_records_count?: number;
+    validated_eras?: { minEra: number; maxEra: number };
+    validated_block_heights?: { minBlockHeight: number; maxBlockHeight: number };
+    total_rpcs?: number;
+    available_rpcs?: number;
+}
+
 export function WorkerMessages() {
-    const [message, setMessage] = useState<MessageState | null>(null);
-    const [processStarted, setProcessStarted] = useState(false);
-    const [fetchProgress, setFetchProgress] = useState(0);
-    const [validateProgress, setValidateProgress] = useState(0);
-    const [trustedHash, setTrustedHash] = useState<string>('');
+    const [workerState, setWorkerState] = useState<WorkerState>({
+        trusted_hash: '',
+        fetch_progress: 0,
+        validate_progress: 0,
+        status: 'idle',
+        message: null,
+    });
 
     useEffect(() => {
         const handleMessage = (event: MessageEvent) => {
-            const {data} = event;
+            const { data } = event;
             if (!data) return;
-
             switch (data.type) {
                 case 'LM_MESSAGE':
-                    setMessage({type: data.message.type, message: data.message.text});
+                    setWorkerState(prevState => ({
+                        ...prevState,
+                        message: { type: data.message.type, message: data.message.text },
+                    }));
+                    if (data.message.type === 'error') {
+                        setWorkerState(prevState => ({
+                            ...prevState,
+                            status: 'error',
+                        }));
+                    }
                     break;
                 case 'UPDATE_STATE':
-                    setTrustedHash(prev => data.data.trustedHash ?? prev);
-                    setFetchProgress(prev => data.data.fetchProgress ?? prev);
-                    setValidateProgress(prev => data.data.validateProgress ?? prev);
-                    setProcessStarted(data.data.status === 'processing');
-                    if (data.data.status === 'completed') {
-                        console.log('Validation completed');
-                        setProcessStarted(false);
-                    }
+                    setWorkerState(prevState => ({
+                        ...prevState,
+                        ...data.data,
+                    }));
                     break;
                 default:
                     console.log(`Unhandled message type: ${data.type}`);
@@ -52,8 +69,5 @@ export function WorkerMessages() {
         return () => navigator.serviceWorker.removeEventListener('message', handleMessage);
     }, []);
 
-    return {
-        message, processStarted, fetchProgress, validateProgress, trustedHash,
-        setMessage, setProcessStarted, setTrustedHash
-    };
+    return { workerState, setWorkerState };
 }

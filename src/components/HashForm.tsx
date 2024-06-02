@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 interface HashFormProps {
     trustedHash: string;
@@ -7,8 +7,8 @@ interface HashFormProps {
     onHashChange: (newHash: string) => void
 }
 
-const HashForm: React.FC<HashFormProps> = ({trustedHash, clearMessage, disabled, onHashChange}) => {
-    const [hash, setHash] = useState(trustedHash);
+const HashForm: React.FC<HashFormProps> = ({ trustedHash, clearMessage, disabled, onHashChange }) => {
+    const [hash, setHash] = useState(trustedHash || '');
     const [isValidHash, setIsValidHash] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -19,7 +19,8 @@ const HashForm: React.FC<HashFormProps> = ({trustedHash, clearMessage, disabled,
     }, []);
 
     useEffect(() => {
-        setHash(trustedHash);
+        setHash(trustedHash || '');
+        validateHash(trustedHash);
     }, [trustedHash]);
 
     // 64 characters long hex
@@ -37,7 +38,8 @@ const HashForm: React.FC<HashFormProps> = ({trustedHash, clearMessage, disabled,
         }
     };
 
-    const handleButtonClick = () => {
+    const handleSubmit = (event: React.FormEvent) => {
+        event.preventDefault();
         clearMessage();
         sendMessageToWorker(hash);
     };
@@ -55,7 +57,7 @@ const HashForm: React.FC<HashFormProps> = ({trustedHash, clearMessage, disabled,
     };
 
     return (
-        <div className="flex w-full mb-2">
+        <form onSubmit={handleSubmit} className="flex w-full mb-2">
             <input
                 ref={inputRef}
                 type="text"
@@ -63,16 +65,18 @@ const HashForm: React.FC<HashFormProps> = ({trustedHash, clearMessage, disabled,
                 placeholder="Trusted Block Hash"
                 disabled={disabled}
                 onChange={handleInputChange}
-                className="input flex-1 mr-2 py-2 px-8 text-black"
-                aria-label="Enter trusted block hash"  // Improved accessibility
+                className="input flex-1 mr-2 py-2 px-8 text-black outline-none"
+                aria-label="Enter trusted block hash"
             />
-            <button onClick={handleButtonClick}
-                    className={`btn btn-primary bg-blue-500 text-white font-bold py-4 px-12
-                        ${!isValidHash || disabled ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-700'}`}
-                    disabled={!isValidHash || disabled}>
+            <button
+                type="submit"
+                className={`btn btn-primary bg-blue-500 text-white font-bold py-4 px-12
+                    ${!isValidHash || disabled ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-700'}`}
+                disabled={!isValidHash || disabled}
+            >
                 Start
             </button>
-        </div>
+        </form>
     );
 };
 

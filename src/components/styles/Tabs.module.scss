@@ -1,0 +1,17 @@
+.tabs-container {
+    @apply flex;
+    justify-content: flex-start;
+    width: 100%;
+}
+
+.tab-button {
+    @apply px-6 py-3 me-1 rounded-md rounded-b-none focus:outline-none shadow-xl;
+
+    &.active {
+        @apply text-white bg-panel border-panel;
+    }
+
+    &:not(.active) {
+        @apply text-gray-700 border-transparent bg-tab-inactive;
+    }
+}
