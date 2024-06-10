@@ -1,0 +1,15 @@
+.info {
+    @apply w-full p-8 bg-info-block;
+
+    .item {
+        @apply text-info-item pb-1;
+
+        > span {
+            @apply text-gray-300 ms-1;
+
+            > a {
+                @apply ml-2 text-info-link underline font-normal;
+            }
+        }
+    }
+}

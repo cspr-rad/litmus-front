@@ -1,12 +1,12 @@
 import React from 'react';
-import {faTimes} from "@fortawesome/free-solid-svg-icons";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faGithub} from "@fortawesome/free-brands-svg-icons";
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faGithub} from '@fortawesome/free-brands-svg-icons';
+import styles from '@/components/styles/Footer.module.scss';
 
 const Footer: React.FC = () => {
     return (
         <footer
-            className="w-full p-6 bg-litmus-gray-blue text-sm flex justify-between border-t-gray-900 border-t text-gray-400 px-12 bg-gray-800">
+            className={styles.footer}>
             <div className="flex-1">
                 <p>
                     <FontAwesomeIcon icon={faGithub}/>

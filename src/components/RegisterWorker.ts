@@ -4,10 +4,10 @@ export const registerServiceWorker = (): void => {
             .then(registration => {
                 console.log('Service Worker registered with scope:', registration.scope);
                 if (navigator.serviceWorker.controller) {
-                        navigator.serviceWorker.controller.postMessage({
-                            target: 'litmus-worker',
-                            command: 'init',
-                        });
+                    navigator.serviceWorker.controller.postMessage({
+                        target: 'litmus-worker',
+                        command: 'init',
+                    });
                 }
             })
             .catch(error => {
@@ -16,4 +16,4 @@ export const registerServiceWorker = (): void => {
     } else {
         console.log('Service Workers are not supported by this browser.');
     }
-}
+};

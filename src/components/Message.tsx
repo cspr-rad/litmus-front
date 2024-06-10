@@ -1,8 +1,8 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
-
-export type MessageType = 'info' | 'success' | 'error';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faTimes} from '@fortawesome/free-solid-svg-icons';
+import styles from '@/components/styles/Message.module.scss';
+import {MessageType} from '@/components/common/interfaces';
 
 interface MessageProps {
     type: MessageType;
@@ -10,26 +10,11 @@ interface MessageProps {
     onClose: () => void;
 }
 
-const Message: React.FC<MessageProps> = ({ type, message, onClose }) => {
-    const styles = {
-        info: {
-            backgroundColor: 'bg-blue-200',
-            textColor: 'text-blue-950'
-        },
-        success: {
-            backgroundColor: 'bg-green-200',
-            textColor: 'text-green-950'
-        },
-        error: {
-            backgroundColor: 'bg-red-200',
-            textColor: 'text-red-950'
-        }
-    };
-    const { backgroundColor, textColor } = styles[type];
-
+const Message: React.FC<MessageProps> = ({type, message, onClose}) => {
     return (
-        <div className={`fixed top-0 left-0 right-0 w-full transition-transform duration-500 ${message ? 'translate-y-0' : '-translate-y-full'}`}>
-            <div className={`flex justify-between items-center w-full px-8 py-4 ${backgroundColor} ${textColor}`}>
+        <div
+            className={`${styles.container} ${message ? 'translate-y-0' : '-translate-y-full'}`}>
+            <div className={`${styles.box} ${styles[type]}`}>
                 <div className="flex items-center">
                     <span className="font-bold mr-2">{type.toUpperCase()}:</span>
                     {message}

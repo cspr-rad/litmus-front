@@ -1,0 +1,7 @@
+.main {
+    @apply flex flex-col w-full p-4 items-center;
+
+    .content {
+        @apply w-full p-6 py-9 rounded-md rounded-tl-none bg-panel shadow-xl min-h-[550px];
+    }
+}

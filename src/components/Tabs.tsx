@@ -1,12 +1,12 @@
 import React from 'react';
-import styles from './styles/Tabs.module.scss';
+import styles from '@/components/styles/Tabs.module.scss';
 
 interface TabsProps {
     activeTab: string;
     onTabChange: (tab: string) => void;
 }
 
-const Tabs: React.FC<TabsProps> = ({ activeTab, onTabChange }) => (
+const Tabs: React.FC<TabsProps> = ({activeTab, onTabChange}) => (
     <div className={styles['tabs-container']}>
         <button
             className={`${styles['tab-button']} ${activeTab === 'block' ? styles.active : ''}`}

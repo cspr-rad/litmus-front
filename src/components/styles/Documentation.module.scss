@@ -1,0 +1,23 @@
+.documentation {
+    @apply p-10 bg-info-block text-white;
+
+    h1 {
+        @apply text-3xl font-bold mb-6;
+    }
+
+    h2 {
+        @apply text-xl font-bold mb-6 mt-9;
+    }
+
+    p {
+        @apply mb-6;
+    }
+
+    code {
+        @apply font-bold text-blue-400;
+    }
+
+    pre code.language-javascript {
+        @apply font-normal text-yellow-400;
+    }
+}

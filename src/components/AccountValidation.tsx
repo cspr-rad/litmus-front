@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import styles from '@/components/styles/AccountValidation.module.scss';
 
 const isHex = (value: string, minLength: number, maxLength: number) =>
     /^[0-9a-fA-F]+$/.test(value) && value.length >= minLength && value.length <= maxLength;
@@ -34,34 +35,36 @@ const AccountValidation: React.FC = () => {
     const handleSubmit = (event: React.FormEvent) => {
         event.preventDefault();
         if (isInputValid) {
-            console.log('Form is valid and submitted', accountInput, blockInput);
+            if (navigator.serviceWorker.controller) {
+                navigator.serviceWorker.controller.postMessage({
+                    target: 'litmus-worker',
+                    command: 'validateAccount',
+                    account: accountInput,
+                    block: blockInput,
+                });
+            }
 
-        } else {
-            console.log('Form is invalid');
         }
     };
 
     return (
-        <form onSubmit={handleSubmit} className="flex flex-col w-full mb-2 space-y-4">
+        <form onSubmit={handleSubmit} className={styles.form}>
             <input
                 type="text"
                 placeholder="Account (hex or hash)"
                 value={accountInput}
                 onChange={handleAccountInputChange}
-                className="input w-full py-4 px-8 text-black outline-none"
             />
             <input
                 type="text"
                 placeholder="Block height or hash (optional, last block by default)"
                 value={blockInput}
                 onChange={handleBlockInputChange}
-                className="input w-full py-4 px-8 text-black outline-none"
             />
             <div className="flex justify-end">
                 <button
                     type="submit"
-                    className={`btn btn-primary bg-blue-500 text-white font-bold py-4 px-12
-                    ${!isInputValid ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-700'}`}
+                    className={!isInputValid ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-700'}
                     disabled={!isInputValid}
                 >
                     Validate

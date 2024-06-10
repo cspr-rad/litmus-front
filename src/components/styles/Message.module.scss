@@ -1,0 +1,19 @@
+.container {
+    @apply fixed top-0 left-0 right-0 w-full transition-transform duration-500;
+
+    .box {
+        @apply flex justify-between items-center w-full px-8 py-4;
+
+        &.info {
+            @apply bg-blue-200 text-blue-950;
+        }
+
+        &.success {
+            @apply bg-green-200 text-green-950;
+        }
+
+        &.error {
+            @apply bg-red-200 text-red-950;
+        }
+    }
+}

@@ -1,59 +1,91 @@
 import React from 'react';
-import { WorkerState } from './WorkerMessages';
+import {faExternalLink} from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import HashDisplay from '@/components/HashDisplay';
+import {WorkerState} from '@/components/common/interfaces';
+import styles from '@/components/styles/Info.module.scss';
 
 interface InfoProps {
     workerState: WorkerState;
 }
 
-const Info: React.FC<InfoProps> = ({ workerState }) => {
+const Info: React.FC<InfoProps> = ({workerState}) => {
     return (
-        <div className="w-full p-8 bg-info-block">
-            <p className="text-info-item pb-1">
+        <div className={styles.info}>
+            <div className={styles.item}>
                 Status:
-                <span className="text-bold text-gray-300 ms-1 capitalize">
+                <span className="capitalize">
                     {workerState.status}
                 </span>
-            </p>
-            {workerState.trusted_block && (
-                <p className="text-info-item pb-1">
-                    Trusted block era:
-                    <span className="text-bold text-gray-300 ms-1">
-                        {workerState.trusted_block.era}
+            </div>
+            {workerState.last_block?.header && (
+                <div className={styles.item}>
+                    Last block:
+                    <span>
+                         {workerState.last_block.header.height} (Era&nbsp;{workerState.last_block.header.era_id})
                     </span>
-                </p>
+                </div>
+            )}
+            <div className={styles.item}>
+                Trusted block:
+                {workerState.trusted_block && (
+                    <span>
+                        {workerState.trusted_block.block_height} (Era&nbsp;{workerState.trusted_block.era})
+                        <HashDisplay hash={workerState.trusted_block.block_hash}/>
+                    </span>
+                )}
+                {!workerState.trusted_block && (
+                    <span>
+                        None
+                    </span>
+                )}
+            </div>
+            {workerState.last_switch_block && (
+                <div className={styles.item}>
+                    Last switch block:
+                    <span>
+                        {workerState.last_switch_block.header.height}{' '}
+                        (Era&nbsp;{workerState.last_switch_block.header.era_id})
+                        <a href={'https://cspr.live/block/' + workerState.last_switch_block.hash}
+                           target="_blank">
+                            Check&nbsp;height&nbsp;&amp;&nbsp;hash
+                            <FontAwesomeIcon icon={faExternalLink} className="ms-2"/>
+                        </a>
+                    </span>
+                </div>
             )}
             {workerState.validators_records_count !== undefined && (
-                <p className="text-info-item pb-1">
+                <div className={styles.item}>
                     Weights records in db:
-                    <span className="text-bold text-gray-300 ms-1">
+                    <span>
                         {workerState.validators_records_count}
                     </span>
-                </p>
+                </div>
             )}
             {workerState.validated_eras &&
                 (workerState.validated_eras.minEra > 0 || workerState.validated_eras.maxEra > 0) && (
-                    <p className="text-info-item pb-1">
+                    <div className={styles.item}>
                         Validated eras:
-                        <span className="text-bold text-gray-300 ms-1">
-                        {workerState.validated_eras.minEra} &mdash; {workerState.validated_eras.maxEra}
-                    </span>
-                    </p>
+                        <span>
+                            {workerState.validated_eras.minEra} &mdash; {workerState.validated_eras.maxEra}
+                        </span>
+                    </div>
                 )}
             {workerState.last_validated && workerState.last_validated.era > 0 && (
-                <p className="text-info-item pb-1">
+                <div className={styles.item}>
                     Last validated:
-                    <span className="text-bold text-gray-300 ms-1">
-                        {workerState.last_validated.era} ({workerState.last_validated.block_height})
+                    <span>
+                        {workerState.last_validated.block_height} (Era&nbsp;{workerState.last_validated.era})
                     </span>
-                </p>
+                </div>
             )}
             {workerState.total_rpcs !== undefined && workerState.available_rpcs !== undefined && (
-                <p className="text-info-item pb-1">
+                <div className={styles.item}>
                     Available RPCs:
-                    <span className="text-bold text-gray-300 ms-1">
+                    <span>
                         {workerState.available_rpcs} of {workerState.total_rpcs}
                     </span>
-                </p>
+                </div>
             )}
         </div>
     );

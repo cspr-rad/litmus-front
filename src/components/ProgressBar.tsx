@@ -1,4 +1,5 @@
 import React from 'react';
+import styles from '@/components/styles/ProgressBar.module.scss';
 
 interface ProgressBarProps {
     title: string;
@@ -7,21 +8,22 @@ interface ProgressBarProps {
     eta?: number;
 }
 
-const ProgressBar: React.FC<ProgressBarProps> = ({ title, progress, blocks = 0, eta = 0 }) => {
+const ProgressBar: React.FC<ProgressBarProps> = ({title, progress, blocks = 0, eta = 0}) => {
     const formattedETA = formatETA(eta);
+
     return (
         <div className="w-full mt-4">
-            <div className="mb-1 flex justify-between items-center">
+            <div className={styles.caption}>
                 <div>
                     {title} {blocks} blocks&hellip;
-                    {progress === 100 && <span className="text-green-400 ms-2">Done</span>}
+                    {progress === 100 && <span className={styles.done}>Done</span>}
                 </div>
-                {progress > 20 && progress < 100 && <span className="ms-2 text-gray-400">~{`${formattedETA}`}</span>}
+                {progress > 20 && progress < 100 && <span className={styles.eta}>~{`${formattedETA}`}</span>}
             </div>
-            <div className="w-full bg-gray-700 h-8">
+            <div className={styles.bar}>
                 <div
-                    className="bg-blue-500 h-8 transition-all duration-200 ease-in-out"
-                    style={{ width: `${progress}%` }}
+                    className={styles.progress}
+                    style={{width: `${progress}%`}}
                 ></div>
             </div>
         </div>

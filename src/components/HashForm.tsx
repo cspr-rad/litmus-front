@@ -1,13 +1,14 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
+import styles from '@/components/styles/HashForm.module.scss';
 
 interface HashFormProps {
     trustedHash: string;
     clearMessage: () => void;
     disabled?: boolean;
-    onHashChange: (newHash: string) => void
+    onHashChange: (newHash: string) => void;
 }
 
-const HashForm: React.FC<HashFormProps> = ({ trustedHash, clearMessage, disabled, onHashChange }) => {
+const HashForm: React.FC<HashFormProps> = ({trustedHash, clearMessage, disabled, onHashChange}) => {
     const [hash, setHash] = useState(trustedHash || '');
     const [isValidHash, setIsValidHash] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
@@ -23,7 +24,6 @@ const HashForm: React.FC<HashFormProps> = ({ trustedHash, clearMessage, disabled
         validateHash(trustedHash);
     }, [trustedHash]);
 
-    // 64 characters long hex
     const validateHash = (inputHash: string) => {
         const isValid = /^[a-fA-F0-9]{64}$/.test(inputHash);
         setIsValidHash(isValid);
@@ -57,21 +57,19 @@ const HashForm: React.FC<HashFormProps> = ({ trustedHash, clearMessage, disabled
     };
 
     return (
-        <form onSubmit={handleSubmit} className="flex w-full mb-2">
+        <form onSubmit={handleSubmit} className={styles.form}>
             <input
                 ref={inputRef}
                 type="text"
                 value={hash}
-                placeholder="Trusted Block Hash"
+                placeholder="Trusted Switch Block Hash"
                 disabled={disabled}
                 onChange={handleInputChange}
-                className="input flex-1 mr-2 py-2 px-8 text-black outline-none"
                 aria-label="Enter trusted block hash"
             />
             <button
                 type="submit"
-                className={`btn btn-primary bg-blue-500 text-white font-bold py-4 px-12
-                    ${!isValidHash || disabled ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-700'}`}
+                className={!isValidHash || disabled ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-700'}
                 disabled={!isValidHash || disabled}
             >
                 Start
