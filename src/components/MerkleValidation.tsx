@@ -25,7 +25,7 @@ const MerkleValidation: React.FC<MerkleValidationProps> = ({workerState}) => {
         <>
             <form onSubmit={handleSubmit} className={styles.form}>
                 <p className="text-gray-300 px-4 mb-2">
-                    Enter a Merkle proof for decoding. The only currently supported method is "query_global_state".
+                    Enter a Merkle proof for decoding. The only currently supported method is &quot;query_global_state&quot;.
                 </p>
                 <textarea
                     onChange={(event) => setMerkleInput(event.target.value)}

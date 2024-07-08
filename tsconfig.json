@@ -9,6 +9,7 @@
       "./node_modules/@types",
       "./src/components/common/"
     ],
+    "types": ["node", "marked"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -30,7 +31,8 @@
   "include": [
     "next-env.d.ts",
     "**/*.ts",
-    "**/*.tsx"
+    "**/*.tsx",
+    "global.d.ts"
   ],
   "exclude": [
     "node_modules"
