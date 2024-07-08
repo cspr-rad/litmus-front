@@ -1,5 +1,5 @@
-import {useEffect, useState} from 'react';
-import {WorkerState} from '@/components/common/interfaces';
+import { useEffect, useState } from 'react';
+import { WorkerState } from '@/components/common/interfaces';
 
 export interface MessageEvent {
     type: string;
@@ -11,35 +11,18 @@ export function WorkerMessages() {
         trusted_hash: '',
         fetch_progress: 0,
         validate_progress: 0,
-        status: 'idle',
         message: null,
     });
 
     useEffect(() => {
         const handleMessage = (event: MessageEvent) => {
-            const {data} = event;
+            const { data } = event;
             if (!data) return;
-            switch (data.type) {
-                case 'LM_MESSAGE':
-                    setWorkerState(prevState => ({
-                        ...prevState,
-                        message: {type: data.message.type, message: data.message.text},
-                    }));
-                    if (data.message.type === 'error') {
-                        setWorkerState(prevState => ({
-                            ...prevState,
-                            status: 'error',
-                        }));
-                    }
-                    break;
-                case 'UPDATE_STATE':
-                    setWorkerState(prevState => ({
-                        ...prevState,
-                        ...data.data,
-                    }));
-                    break;
-                default:
-                    console.log(`Unhandled message type: ${data.type}`);
+            if (data.type === 'UPDATE_STATE') {
+                setWorkerState(prevState => ({
+                    ...prevState,
+                    ...data.data,
+                }));
             }
         };
 
@@ -47,5 +30,5 @@ export function WorkerMessages() {
         return () => navigator.serviceWorker.removeEventListener('message', handleMessage);
     }, []);
 
-    return {workerState, setWorkerState};
+    return { workerState, setWorkerState };
 }

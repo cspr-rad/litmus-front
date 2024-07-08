@@ -8,17 +8,21 @@ import BlockValidation from '@/components/BlockValidation';
 import AccountValidation from '@/components/AccountValidation';
 import Documentation from '@/components/Documentation';
 import styles from '@/components/styles/Worker.module.scss';
+import MerkleValidation from '@/components/MerkleValidation';
 
 const Worker: React.FC = () => {
     const {workerState, setWorkerState} = WorkerMessages();
-    const {message} = workerState;
     const [activeTab, setActiveTab] = useState<string>('block');
 
     const clearMessage = () => {
-        setWorkerState(prevState => ({
-            ...prevState,
-            message: null
-        }));
+        if (navigator.serviceWorker.controller) {
+            navigator.serviceWorker.controller.postMessage({
+                target: 'litmus-worker',
+                command: 'dismissMessage'
+            });
+        } else {
+            console.log('Service worker controller not available.');
+        }
     };
 
     useEffect(() => {
@@ -27,7 +31,8 @@ const Worker: React.FC = () => {
 
     return (
         <>
-            {message && <Message type={message.type} message={message.message} onClose={clearMessage}/>}
+            {workerState.error && <Message type="error" message={workerState.error} onClose={clearMessage}/>}
+            {workerState.info && <Message type="info" message={workerState.info} onClose={clearMessage}/>}
             <div className={styles.main}>
                 <Logo/>
                 <Tabs activeTab={activeTab} onTabChange={setActiveTab}/>
@@ -39,7 +44,9 @@ const Worker: React.FC = () => {
                             clearMessage={clearMessage}
                         />
                     ) : activeTab === 'account' ? (
-                        <AccountValidation/>
+                        <AccountValidation workerState={workerState}/>
+                    ) : activeTab === 'merkle' ? (
+                        <MerkleValidation workerState={workerState}/>
                     ) : (
                         <Documentation/>
                     )}

@@ -1,5 +1,5 @@
 .info {
-    @apply w-full p-8 bg-info-block;
+    @apply w-full p-8 bg-info-block overflow-x-auto;
 
     .item {
         @apply text-info-item pb-1;

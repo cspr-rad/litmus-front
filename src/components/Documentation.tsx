@@ -2,11 +2,8 @@ import React, {useEffect, useState} from 'react';
 import {marked} from 'marked';
 import styles from '@/components/styles/Documentation.module.scss';
 
-interface MarkdownViewerProps {
-    url: string;
-}
-
-const Documentation: React.FC<MarkdownViewerProps> = ({url = '/README.md'}) => {
+const Documentation: React.FC = () => {
+    const url = '/README.md';
     const [content, setContent] = useState<string>('');
 
     useEffect(() => {
@@ -26,7 +23,7 @@ const Documentation: React.FC<MarkdownViewerProps> = ({url = '/README.md'}) => {
 
     return (
         <div className={styles.documentation}
-            dangerouslySetInnerHTML={{__html: content}}
+             dangerouslySetInnerHTML={{__html: content}}
         />
     );
 };

@@ -12,11 +12,11 @@ interface BlockValidationProps {
 }
 
 const BlockValidation: React.FC<BlockValidationProps> = ({workerState, setWorkerState, clearMessage}) => {
-    const handleGetLastBlock = () => {
+    const handleGetLastSwitchBlock = () => {
         if (navigator.serviceWorker.controller) {
             navigator.serviceWorker.controller.postMessage({
                 target: 'litmus-worker',
-                command: 'getLastBlock',
+                command: 'getLastSwitchBlock',
             });
         } else {
             console.log('Service worker controller not available.');
@@ -31,8 +31,8 @@ const BlockValidation: React.FC<BlockValidationProps> = ({workerState, setWorker
                 disabled={workerState.status === 'processing'}
                 onHashChange={(hash) => setWorkerState(prev => ({...prev, trustedHash: hash}))}
             />
-            <ActionsBar onGetLastBlock={handleGetLastBlock}/>
-            <Info workerState={workerState}/>
+            <ActionsBar onGetLastBlock={handleGetLastSwitchBlock}/>
+            <Info workerState={workerState} scope={'block'}/>
             {workerState.status === 'processing' && (
                 <div className="mt-4 w-full">
                     <ProgressBar title="Fetched" progress={workerState.fetch_progress}

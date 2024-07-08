@@ -21,6 +21,12 @@ const Tabs: React.FC<TabsProps> = ({activeTab, onTabChange}) => (
             Account balance validation
         </button>
         <button
+            className={`${styles['tab-button']} ${activeTab === 'merkle' ? styles.active : ''}`}
+            onClick={() => onTabChange('merkle')}
+        >
+            Merkle proof validation
+        </button>
+        <button
             className={`${styles['tab-button']} ${activeTab === 'docs' ? styles.active : ''}`}
             onClick={() => onTabChange('docs')}
         >

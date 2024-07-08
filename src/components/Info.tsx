@@ -1,94 +1,171 @@
 import React from 'react';
-import {faExternalLink} from '@fortawesome/free-solid-svg-icons';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import { faExternalLink } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import HashDisplay from '@/components/HashDisplay';
-import {WorkerState} from '@/components/common/interfaces';
+import { WorkerState } from '@/components/common/interfaces';
 import styles from '@/components/styles/Info.module.scss';
 
 interface InfoProps {
     workerState: WorkerState;
+    scope: 'block' | 'account' | 'merkle';
 }
 
-const Info: React.FC<InfoProps> = ({workerState}) => {
+const Info: React.FC<InfoProps> = ({ workerState, scope }) => {
+    const {
+        status,
+        last_block,
+        trusted_block,
+        last_switch_block,
+        validators_records_count,
+        validated_eras,
+        last_validated,
+        total_rpcs,
+        available_rpcs,
+        balance_CSPR,
+        balance_motes,
+        account,
+        account_state_root_hash,
+        merkle_proof_parsed
+    } = workerState;
+
+    const formatBalance = (balance: string): string => {
+        return parseFloat(balance).toLocaleString(
+            'en-US',
+            { minimumFractionDigits: 2, maximumFractionDigits: 2 }
+        );
+    };
+
+    const convertedMerkleProof = mapToObject(merkle_proof_parsed);
+    const formattedMerkleProof = JSON.stringify(convertedMerkleProof, null, 2);
+
     return (
-        <div className={styles.info}>
-            <div className={styles.item}>
-                Status:
-                <span className="capitalize">
-                    {workerState.status}
-                </span>
-            </div>
-            {workerState.last_block?.header && (
-                <div className={styles.item}>
+        <div className={ styles.info }>
+            { status && (
+                <div className={ styles.item }>
+                    Status: <span className="capitalize">{ status }</span>
+                </div>
+            ) }
+
+            { scope === 'block' && last_block?.header && (
+                <div className={ styles.item }>
                     Last block:
                     <span>
-                         {workerState.last_block.header.height} (Era&nbsp;{workerState.last_block.header.era_id})
+                        { last_block.header.height } (Era&nbsp;{ last_block.header.era_id })
                     </span>
                 </div>
-            )}
-            <div className={styles.item}>
-                Trusted block:
-                {workerState.trusted_block && (
+            ) }
+
+            { scope === 'block' && trusted_block && (
+                <div className={ styles.item }>
+                    Trusted block:
                     <span>
-                        {workerState.trusted_block.block_height} (Era&nbsp;{workerState.trusted_block.era})
-                        <HashDisplay hash={workerState.trusted_block.block_hash}/>
+                        { trusted_block.header.height } (Era&nbsp;{ trusted_block.header.era_id })
+                        <HashDisplay hash={ trusted_block.hash }/>
                     </span>
-                )}
-                {!workerState.trusted_block && (
-                    <span>
-                        None
-                    </span>
-                )}
-            </div>
-            {workerState.last_switch_block && (
-                <div className={styles.item}>
+                </div>
+            ) }
+
+            { scope === 'block' && last_switch_block?.header && (
+                <div className={ styles.item }>
                     Last switch block:
                     <span>
-                        {workerState.last_switch_block.header.height}{' '}
-                        (Era&nbsp;{workerState.last_switch_block.header.era_id})
-                        <a href={'https://cspr.live/block/' + workerState.last_switch_block.hash}
-                           target="_blank">
+                        { last_switch_block.header.height } (Era&nbsp;{ last_switch_block.header.era_id })
+                        <a href={ `https://cspr.live/block/${ last_switch_block.hash }` } target="_blank"
+                           rel="noopener noreferrer">
                             Check&nbsp;height&nbsp;&amp;&nbsp;hash
-                            <FontAwesomeIcon icon={faExternalLink} className="ms-2"/>
+                            <FontAwesomeIcon icon={ faExternalLink } className="ms-2"/>
                         </a>
                     </span>
                 </div>
-            )}
-            {workerState.validators_records_count !== undefined && (
-                <div className={styles.item}>
-                    Weights records in db:
+            ) }
+
+            { scope === 'block' && validators_records_count !== undefined && (
+                <div className={ styles.item }>
+                    Weights records in db: <span>{ validators_records_count }</span>
+                </div>
+            ) }
+
+            { scope === 'block' && validated_eras && (validated_eras.minEra > 0 || validated_eras.maxEra > 0) && (
+                <div className={ styles.item }>
+                    Validated eras:
                     <span>
-                        {workerState.validators_records_count}
+                        { validated_eras.minEra } &mdash; { validated_eras.maxEra }
                     </span>
                 </div>
-            )}
-            {workerState.validated_eras &&
-                (workerState.validated_eras.minEra > 0 || workerState.validated_eras.maxEra > 0) && (
-                    <div className={styles.item}>
-                        Validated eras:
-                        <span>
-                            {workerState.validated_eras.minEra} &mdash; {workerState.validated_eras.maxEra}
-                        </span>
-                    </div>
-                )}
-            {workerState.last_validated && workerState.last_validated.era > 0 && (
-                <div className={styles.item}>
+            ) }
+
+            { scope === 'block' && last_validated && last_validated?.era > 0 && (
+                <div className={ styles.item }>
                     Last validated:
                     <span>
-                        {workerState.last_validated.block_height} (Era&nbsp;{workerState.last_validated.era})
+                        { last_validated.block_height } (Era&nbsp;{ last_validated.era })
                     </span>
                 </div>
-            )}
-            {workerState.total_rpcs !== undefined && workerState.available_rpcs !== undefined && (
-                <div className={styles.item}>
+            ) }
+
+            { scope === 'account' && account && (
+                <div className={ styles.item }>
+                    Validated account:
+                    <span>
+                        <HashDisplay hash={ account }/>
+                    </span>
+                </div>
+            ) }
+
+            { scope === 'account' && account_state_root_hash && (
+                <div className={ styles.item }>
+                    State root hash:
+                    <span>
+                        <HashDisplay hash={ account_state_root_hash }/>
+                    </span>
+                </div>
+            ) }
+
+            { scope === 'account' && balance_motes !== undefined && balance_CSPR && (
+                <div className={ styles.item }>
+                    Validated balance:
+                    <span>
+                        <b className={ 'text-green-500' }>
+                            { formatBalance(String(balance_CSPR)) } CSPR
+                        </b>
+                        <small> ({ balance_motes } mote)</small>
+                    </span>
+                </div>
+            ) }
+
+            { total_rpcs !== undefined && available_rpcs !== undefined && (
+                <div className={ styles.item }>
                     Available RPCs:
                     <span>
-                        {workerState.available_rpcs} of {workerState.total_rpcs}
+                        { available_rpcs } of { total_rpcs }
                     </span>
                 </div>
-            )}
+            ) }
+
+            { scope === 'merkle' && merkle_proof_parsed !== undefined && (
+                <div className={ styles.item }>
+                    Decoded Merkle Proof:
+                    <pre>
+                        { formattedMerkleProof }
+                    </pre>
+                </div>
+            ) }
         </div>
     );
 };
+
+function mapToObject(map: any): any {
+    if (map instanceof Map) {
+        const obj: any = {};
+        map.forEach((value, key) => {
+            obj[key] = mapToObject(value);
+        });
+        return obj;
+    } else if (Array.isArray(map)) {
+        return map.map(item => mapToObject(item));
+    } else {
+        return map;
+    }
+}
 
 export default Info;

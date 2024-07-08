@@ -48,7 +48,7 @@ const HashForm: React.FC<HashFormProps> = ({trustedHash, clearMessage, disabled,
         if (navigator.serviceWorker.controller) {
             navigator.serviceWorker.controller.postMessage({
                 target: 'litmus-worker',
-                command: 'startFetching',
+                command: 'setTrustedBlockHash',
                 trusted_block_hash: hash,
             });
         } else {

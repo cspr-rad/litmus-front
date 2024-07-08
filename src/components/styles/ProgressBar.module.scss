@@ -5,11 +5,11 @@
         @apply mb-1 flex justify-between items-center;
 
         .done {
-            @apply text-green-400 ms-2;
+            @apply inline-block text-green-400 ms-4;
         }
 
         .eta {
-            @apply ms-2 text-gray-400;
+            @apply inline-block text-gray-400 ms-4;
         }
     }
 
