@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styles from '@/components/styles/HashForm.module.scss';
 
 interface HashFormProps {
@@ -8,7 +8,7 @@ interface HashFormProps {
     onHashChange: (newHash: string) => void;
 }
 
-const HashForm: React.FC<HashFormProps> = ({trustedHash, clearMessage, disabled, onHashChange}) => {
+const HashForm: React.FC<HashFormProps> = ({ trustedHash, clearMessage, disabled, onHashChange }) => {
     const [hash, setHash] = useState(trustedHash || '');
     const [isValidHash, setIsValidHash] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
@@ -57,7 +57,7 @@ const HashForm: React.FC<HashFormProps> = ({trustedHash, clearMessage, disabled,
     };
 
     return (
-        <form onSubmit={handleSubmit} className={styles.form}>
+        <form onSubmit={handleSubmit} className={`${styles.form} flex flex-col sm:flex-row`}>
             <input
                 ref={inputRef}
                 type="text"
@@ -66,10 +66,12 @@ const HashForm: React.FC<HashFormProps> = ({trustedHash, clearMessage, disabled,
                 disabled={disabled}
                 onChange={handleInputChange}
                 aria-label="Enter trusted block hash"
+                className="flex-1 mb-2 sm:mb-0"
             />
             <button
                 type="submit"
-                className={!isValidHash || disabled ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-700'}
+                className={`bg-blue-500 text-white font-bold py-4 px-12 ${(!isValidHash || disabled) ?
+                    'opacity-50 cursor-not-allowed' : 'hover:bg-blue-700'}`}
                 disabled={!isValidHash || disabled}
             >
                 Start
