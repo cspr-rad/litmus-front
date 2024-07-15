@@ -3,7 +3,7 @@ import {marked} from 'marked';
 import styles from '@/components/styles/Documentation.module.scss';
 
 const Documentation: React.FC = () => {
-    const url = '/README.md';
+    const url = 'https://raw.githubusercontent.com/cspr-rad/litmus-front/main/README.md';
     const [content, setContent] = useState<string>('');
 
     useEffect(() => {
