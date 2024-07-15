@@ -3,6 +3,7 @@ export type MessageType = 'info' | 'success' | 'error';
 export interface WorkerState {
     last_block?: any;
     trusted_block?: any;
+    trusted_hash: string;
     last_validated?: { era: number; block_height: number };
     fetch_blocks?: number;
     validate_blocks?: number;

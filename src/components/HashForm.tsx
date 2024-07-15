@@ -5,9 +5,10 @@ interface HashFormProps {
     trustedHash: string;
     clearMessage: () => void;
     disabled?: boolean;
+    onHashChange: (newHash: string) => void;
 }
 
-const HashForm: React.FC<HashFormProps> = ({ trustedHash, clearMessage, disabled}) => {
+const HashForm: React.FC<HashFormProps> = ({ trustedHash, clearMessage, disabled, onHashChange }) => {
     const [hash, setHash] = useState(trustedHash || '');
     const [isValidHash, setIsValidHash] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
@@ -32,6 +33,9 @@ const HashForm: React.FC<HashFormProps> = ({ trustedHash, clearMessage, disabled
         const newHash = event.target.value;
         setHash(newHash);
         validateHash(newHash);
+        if (isValidHash) {
+            onHashChange(newHash);
+        }
     };
 
     const handleSubmit = (event: React.FormEvent) => {
