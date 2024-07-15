@@ -8,10 +8,8 @@ export interface MessageEvent {
 
 export function WorkerMessages() {
     const [workerState, setWorkerState] = useState<WorkerState>({
-        trusted_hash: '',
         fetch_progress: 0,
-        validate_progress: 0,
-        message: null,
+        validate_progress: 0
     });
 
     useEffect(() => {

@@ -26,10 +26,9 @@ const BlockValidation: React.FC<BlockValidationProps> = ({workerState, setWorker
     return (
         <>
             <HashForm
-                trustedHash={workerState.trusted_hash}
+                trustedHash={workerState.trusted_block.hash}
                 clearMessage={clearMessage}
                 disabled={workerState.status === 'processing'}
-                onHashChange={(hash) => setWorkerState(prev => ({...prev, trustedHash: hash}))}
             />
             <ActionsBar onGetLastBlock={handleGetLastSwitchBlock}/>
             <Info workerState={workerState} scope={'block'}/>

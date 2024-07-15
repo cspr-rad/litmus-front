@@ -2,6 +2,17 @@
 
 This an example app that uses the Litmus Service Worker to fetch and validate data on Casper blockchain.
 
+## About Litmus
+
+One of the core features of any blockchain is the ability to verify data. Typically, data about a block, transaction, or account is obtained by querying an RPC node and parsing its response. However, this method does not guarantee the validity of the returned data. Litmus' mission is to empower DApps with the ability to verify any response from the blockchain directly in the browser, enhancing the security and reliability of decentralized applications.
+
+## Preparing the Service Worker
+
+Litmus demo app comes with a precompiled service worker and WASM module. However, it is recommended to compile the service worker and WASM module yourself.
+Please see the following repositories:
+(https://github.com/cspr-rad/litmus-worker)[https://github.com/cspr-rad/litmus-worker]
+(https://github.com/cspr-rad/litmus-wasm)[https://github.com/cspr-rad/litmus-wasm]
+
 ## Communication with Service Worker
 
 The app communicates with the Service Worker using the `postMessage` API. The Service Worker listens for messages from
@@ -9,41 +20,74 @@ the app and responds with the requested data.
 
 Service Worker updates the `WorkerState` object, that has followng properties:
 
-`last_block`?: Block | null
+`last_block`
+Returns the last fetched block in the JSON format.
 
-`trusted_hash`: string
+`trusted_hash`
+Returns the currently set trusted block hash.
 
-`trusted_block`?: { era: number; block_height: number; block_hash: string }
+`trusted_block`
+Trusted switch block.
 
-`last_validated`?: { era: number; block_height: number }
+`last_validated`
+Last validated switch block height and era is.
 
-`fetch_blocks`?: number
+`fetch_blocks`
+Number of blocks to fetch.
 
-`validate_blocks`?: number
+`validate_blocks`
+Number of blocks to validate.
 
-`fetch_progress`: number
+`fetch_progress`
+Progress of fetching blocks.
 
-`fetch_eta`?: number
+`fetch_eta`
+Estimated time to fetch all blocks.
 
-`validate_progress`: number
+`validate_progress`
+Progress of validating blocks.
 
-`validate_eta`?: number
+`validate_eta`
+Estimated time to validate all blocks.
 
-`message`: MessageState | null
+`status`
+Status of the worker.
 
-`status`: 'idle' | 'processing' | 'searching' | 'error'
+`last_switch_block`
+Last found switch block.
 
-`last_switch_block`?: Block | null
+`validated_eras`
+Validated eras range.
 
-`validators_records_count`?: number
+`validated_block_heights`
+Validated block heights range.
 
-`validated_eras`?: { minEra: number; maxEra: number }
+`total_rpcs`
+Number of RPCs nodes.
 
-`validated_block_heights`?: { minBlockHeight: number; maxBlockHeight: number }
+`available_rpcs`
+Number of available RPCs nodes.
 
-`total_rpcs`?: number
+`account`
+Account address to validate.
 
-`available_rpcs`?: number
+`balance_CSPR`
+Balance of the account.
+
+`balance_motes`
+Balance of the account in motes.
+
+`account_state_root_hash`
+Account state root hash.
+
+`merkle_proof_parsed`
+Merkle proof parsed as JSON.
+
+`error`
+Error message. Cleared on any message to Worker.
+
+`info`
+Information message. Cleared on any message to Worker.
 
 ## Developing locally
 
