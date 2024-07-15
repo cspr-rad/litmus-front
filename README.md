@@ -56,12 +56,6 @@ Status of the worker.
 `last_switch_block`
 Last found switch block.
 
-`validated_eras`
-Validated eras range.
-
-`validated_block_heights`
-Validated block heights range.
-
 `total_rpcs`
 Number of RPCs nodes.
 

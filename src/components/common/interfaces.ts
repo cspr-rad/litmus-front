@@ -13,8 +13,6 @@ export interface WorkerState {
     validate_eta?: number;
     status?: 'idle' | 'processing' | 'searching' | 'error';
     last_switch_block?: any | null;
-    validated_eras?: { minEra: number; maxEra: number };
-    validated_block_heights?: { minBlockHeight: number; maxBlockHeight: number };
     total_rpcs?: number;
     available_rpcs?: number;
     account? : string;

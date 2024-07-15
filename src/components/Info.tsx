@@ -16,8 +16,6 @@ const Info: React.FC<InfoProps> = ({ workerState, scope }) => {
         last_block,
         trusted_block,
         last_switch_block,
-        validators_records_count,
-        validated_eras,
         last_validated,
         total_rpcs,
         available_rpcs,
@@ -75,21 +73,6 @@ const Info: React.FC<InfoProps> = ({ workerState, scope }) => {
                             Check&nbsp;height&nbsp;&amp;&nbsp;hash
                             <FontAwesomeIcon icon={ faExternalLink } className="ms-2"/>
                         </a>
-                    </span>
-                </div>
-            ) }
-
-            { scope === 'block' && validators_records_count !== undefined && (
-                <div className={ styles.item }>
-                    Weights records in db: <span>{ validators_records_count }</span>
-                </div>
-            ) }
-
-            { scope === 'block' && validated_eras && (validated_eras.minEra > 0 || validated_eras.maxEra > 0) && (
-                <div className={ styles.item }>
-                    Validated eras:
-                    <span>
-                        { validated_eras.minEra } &mdash; { validated_eras.maxEra }
                     </span>
                 </div>
             ) }
