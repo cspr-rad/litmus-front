@@ -10,8 +10,8 @@ One of the core features of any blockchain is the ability to verify data. Typica
 
 Litmus demo app comes with a precompiled service worker and WASM module. However, it is recommended to compile the service worker and WASM module yourself.
 Please see the following repositories:
-(https://github.com/cspr-rad/litmus-worker)[https://github.com/cspr-rad/litmus-worker]
-(https://github.com/cspr-rad/litmus-wasm)[https://github.com/cspr-rad/litmus-wasm]
+https://github.com/cspr-rad/litmus-worker
+https://github.com/cspr-rad/litmus-wasm
 
 ## Communication with Service Worker
 
