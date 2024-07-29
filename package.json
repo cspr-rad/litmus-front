@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "cp -R node_modules/casper-litmus-worker/dist/* public/"
+    "postinstall": "mkdir -p public && cp -R node_modules/casper-litmus-worker/dist/* public/"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.5.2",
