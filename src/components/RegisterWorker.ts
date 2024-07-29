@@ -1,9 +1,6 @@
 export const registerServiceWorker = (): void => {
     if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register(
-            '/node_modules/casper-litmus-worker/dist/service-worker.js',
-            { type: 'module' }
-        )
+        navigator.serviceWorker.register('/service-worker.js', { type: 'module' })
             .then(registration => {
                 console.log('Service Worker registered with scope:', registration.scope);
             })
